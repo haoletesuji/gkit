@@ -1,4 +1,4 @@
-package common
+package gkit
 
 type ErrResponse struct {
 	Success bool   `json:"success" example:"true"`

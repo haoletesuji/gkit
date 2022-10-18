@@ -1,4 +1,4 @@
-package common
+package gkit
 
 type Closer interface {
 	Close() error

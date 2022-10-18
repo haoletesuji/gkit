@@ -1,4 +1,4 @@
-module github.com/thienhaole92/chat/common
+module github.com/haoletesuji/gkit
 
 go 1.18
 

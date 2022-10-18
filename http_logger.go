@@ -1,4 +1,4 @@
-package common
+package gkit
 
 import (
 	log "github.com/sirupsen/logrus"
