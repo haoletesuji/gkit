@@ -26,12 +26,6 @@ go get -u github.com/haoletesuji/gkit
 import "github.com/haoletesuji/gkit"
 ```
 
-3. (Optional) Import `net/http`. This is required for example if using constants such as `http.StatusOK`.
-
-```go
-import "net/http"
-```
-
 ## Quick start
 
 The example how to use Gkit in example folder.
