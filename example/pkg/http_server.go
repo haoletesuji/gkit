@@ -30,6 +30,10 @@ func (s *HttpServer) RegisterRoutes() {
 	chatGroup := s.ginEngine.Group("/api")
 	{
 		chatGroup.GET("/health", s.HealthCheck)
+		chatGroup.GET("/error", s.Error)
+		chatGroup.GET("/success", s.Success)
+		chatGroup.GET("/success_paging", s.SuccessPaging)
+
 	}
 }
 

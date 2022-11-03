@@ -1,11 +1,14 @@
 # Gkit
+
 Template for REST/GRPC API server made with Golang.
 
 Features:
+
 - The log uses logrus
 - Load middleware cross-domain, add header
 - Graceful stop
 - Close connection to DB before stop
+- Response template error/success/success with pagination
 
 ## Installation
 
@@ -33,7 +36,6 @@ import "net/http"
 
 The example how to use Gkit in example folder.
 
-
 ```go
 package main
 
@@ -55,4 +57,43 @@ func main() {
 ```
 # run main.go and visit 0.0.0.0:3000/api/health on browser
 $ go run main.go
+```
+
+Response template:
+- `GET` /api/error
+```json
+{
+  "success": false,
+  "error": "response error"
+}
+```
+- `GET` /api/success
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "uid": "1",
+      "name": "John",
+      "profile_image": "https://google.com/image/1"
+    }
+  ]
+}
+```
+- `GET` /api/success_paging
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "uid": "1",
+      "name": "John",
+      "profile_image": "https://google.com/image/1"
+    }
+  ],
+  "pagination": {
+    "total": 1,
+    "limit": 10
+  }
+}
 ```
