@@ -53,15 +53,33 @@ func main() {
 $ go run main.go
 ```
 
-Response template:
-- `GET` /api/error
+Pre defination response template:
+
+- Error response: `GET` /api/error
+
+```go
+type ErrResponse struct {
+	Success bool   `json:"success" example:"true"`
+	Error   string `json:"error"`
+}
+```
+
 ```json
 {
   "success": false,
   "error": "response error"
 }
 ```
-- `GET` /api/success
+
+- Successfull response: `GET` /api/success
+
+```go
+type SuccessResponse[T any] struct {
+	Success bool `json:"success" example:"true"`
+	Data    T    `json:"data"`
+}
+```
+
 ```json
 {
   "success": true,
@@ -74,7 +92,22 @@ Response template:
   ]
 }
 ```
-- `GET` /api/success_paging
+
+- Successfull with pagination: `GET` /api/success_paging
+
+```go
+type Pagination struct {
+	Total int `json:"total"`
+	Limit int `json:"limit"`
+}
+
+type SuccessPagingResponse[T any] struct {
+	Success    bool       `json:"success" example:"true"`
+	Data       T          `json:"data"`
+	Pagination Pagination `json:"pagination"`
+}
+```
+
 ```json
 {
   "success": true,
