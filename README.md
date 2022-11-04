@@ -28,7 +28,7 @@ import "github.com/haoletesuji/gkit"
 
 ## Quick start
 
-The example how to use Gkit in example folder.
+The example how to use Gkit in `example` folder.
 
 ```go
 package main
