@@ -12,9 +12,9 @@ Features:
 
 ## Installation
 
-To install Gkit package, you need to install Go.
+To install `gkit` package, you need to install Go.
 
-1. You first need [Go](https://golang.org/) installed then you can use the below Go command to install Gkit.
+1. You first need [Go](https://golang.org/) installed then you can use the below Go command to install `gkit`.
 
 ```sh
 go get -u github.com/haoletesuji/gkit
@@ -28,7 +28,7 @@ import "github.com/haoletesuji/gkit"
 
 ## Quick start
 
-The example how to use Gkit in [example](./example/) folder.
+The example how to use `gkit` in [example](./example/) folder.
 
 ```go
 package main
