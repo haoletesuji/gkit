@@ -1,5 +1,9 @@
 package gkit
 
+var (
+	DefaultLimit int64 = 20
+)
+
 type ErrResponse struct {
 	Success bool   `json:"success" example:"true"`
 	Error   string `json:"error"`
@@ -11,8 +15,8 @@ type SuccessResponse[T any] struct {
 }
 
 type Pagination struct {
-	Total int `json:"total"`
-	Limit int `json:"limit"`
+	Total int64 `json:"total"`
+	Limit int64 `json:"limit"`
 }
 
 type SuccessPagingResponse[T any] struct {
