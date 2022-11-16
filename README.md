@@ -59,7 +59,7 @@ Pre defination response template:
 
 ```go
 type ErrResponse struct {
-	Success bool   `json:"success" example:"true"`
+	Success bool   `json:"success" example:"false"`
 	Error   string `json:"error"`
 }
 ```
@@ -97,8 +97,8 @@ type SuccessResponse[T any] struct {
 
 ```go
 type Pagination struct {
-	Total int `json:"total"`
-	Limit int `json:"limit"`
+	Total int64 `json:"total"`
+	Limit int64 `json:"limit"`
 }
 
 type SuccessPagingResponse[T any] struct {

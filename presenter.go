@@ -5,7 +5,7 @@ var (
 )
 
 type ErrResponse struct {
-	Success bool   `json:"success" example:"true"`
+	Success bool   `json:"success" example:"false"`
 	Error   string `json:"error"`
 }
 
