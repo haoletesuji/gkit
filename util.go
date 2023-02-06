@@ -1,6 +1,7 @@
 package gkit
 
 import (
+	"os"
 	"strconv"
 	"strings"
 )
@@ -41,4 +42,11 @@ func GetPageNumber(page string) int {
 
 func ConstructKey(prefix, key string) string {
 	return prefix + ":" + key
+}
+
+func GetEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
 }
