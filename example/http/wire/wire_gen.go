@@ -7,8 +7,8 @@
 package wire
 
 import (
-	"example/pkg"
 	"gkit"
+	"httpexp/pkg"
 )
 
 // Injectors from wire.go:

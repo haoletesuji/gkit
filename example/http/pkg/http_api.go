@@ -48,7 +48,7 @@ func (s *HttpServer) SuccessPaging(ctx *gin.Context) {
 		Success: true,
 		Data:    users,
 		Pagination: gkit.Pagination{
-			Total: len(users),
+			Total: 1,
 			Limit: 10,
 		},
 	})

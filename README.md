@@ -28,7 +28,9 @@ import "github.com/haoletesuji/gkit"
 
 ## Quick start
 
-The example how to use `gkit` in [example](./example/) folder.
+### Starting HTTP server
+
+The example how to use `gkit` with to start REST api in [example](./example/http) folder.
 
 ```go
 package main
@@ -124,3 +126,21 @@ type SuccessPagingResponse[T any] struct {
   }
 }
 ```
+
+### Starting GRPC server
+
+The example how to use `gkit` with to start grpc server in [example](./example/grpc) folder.
+```
+# run main.go
+$ go run main.go
+```
+
+Then you will see the following logging
+
+```
+INFO[0000] grpc server listening on   0.0.0.0:50001      type=grpc
+```
+
+Using Postman to invoke functions
+![Alt text](./images/postman_1.png?raw=true "postman_1")
+

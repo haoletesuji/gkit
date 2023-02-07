@@ -1,7 +1,7 @@
 package main
 
 import (
-	"example/wire"
+	"httpexp/wire"
 	"log"
 )
 

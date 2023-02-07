@@ -6,19 +6,18 @@
 package wire
 
 import (
-	"example/pkg"
 	gkit "gkit"
+	"grpcexp/pkg"
 
 	"github.com/google/wire"
 )
 
 func InitializeServer(name string) (*gkit.Server, error) {
 	wire.Build(
-		gkit.NewHttpLogger,
-		pkg.NewGinServer,
-		pkg.NewRunner,
+		gkit.NewGrpcLogger,
 		pkg.NewCloser,
-		pkg.NewHttpServer,
+		pkg.NewRunner,
+		pkg.NewGrpcServer,
 		gkit.NewServer,
 	)
 	return &gkit.Server{}, nil
