@@ -50,7 +50,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.1 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.38.0
-	golang.org/x/crypto v0.0.0-20210915214749-c084706c2272 // indirect
+	golang.org/x/crypto v0.0.0-20210915214749-c084706c2272
 	golang.org/x/net v0.5.0 // indirect
 	golang.org/x/sys v0.4.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
