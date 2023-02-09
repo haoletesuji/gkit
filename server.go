@@ -11,18 +11,24 @@ import (
 )
 
 type Server struct {
-	name   string
-	runner Runner
-	closer Closer
+	name     string
+	runner   Runner
+	closer   Closer
+	migrator Migrator
 }
 
-func NewServer(name string, runner Runner, closer Closer) *Server {
+func NewServer(name string, runner Runner, closer Closer, migrator Migrator) *Server {
 	return &Server{
-		name, runner, closer,
+		name, runner, closer, migrator,
 	}
 }
 
 func (s *Server) Serve() {
+	err := s.migrator.Migrate()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	s.runner.Run()
 
 	done := make(chan bool, 1)

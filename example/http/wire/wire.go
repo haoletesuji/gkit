@@ -19,6 +19,7 @@ func InitializeServer(name string) (*gkit.Server, error) {
 		pkg.NewRunner,
 		pkg.NewCloser,
 		pkg.NewHttpServer,
+		pkg.NewMigrator,
 		gkit.NewServer,
 	)
 	return &gkit.Server{}, nil

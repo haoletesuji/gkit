@@ -18,6 +18,7 @@ func InitializeServer(name string) (*gkit.Server, error) {
 	grpcServer := pkg.NewGrpcServer(grpcLogger)
 	runner := pkg.NewRunner(grpcServer)
 	closer := pkg.NewCloser()
-	server := gkit.NewServer(name, runner, closer)
+	migrator := pkg.NewMigrator()
+	server := gkit.NewServer(name, runner, closer, migrator)
 	return server, nil
 }

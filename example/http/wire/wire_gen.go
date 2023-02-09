@@ -22,6 +22,7 @@ func InitializeServer(name string) (*gkit.Server, error) {
 	httpServer := pkg.NewHttpServer(name, httpLogger, engine)
 	runner := pkg.NewRunner(httpServer)
 	closer := pkg.NewCloser()
-	server := gkit.NewServer(name, runner, closer)
+	migrator := pkg.NewMigrator()
+	server := gkit.NewServer(name, runner, closer, migrator)
 	return server, nil
 }
