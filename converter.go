@@ -14,6 +14,14 @@ func StringToStringValue(value *string) *wrapperspb.StringValue {
 	return nil
 }
 
+func StringValueToString(value *wrapperspb.StringValue) *string {
+	v := value.GetValue()
+	if len(v) > 0 {
+		return &v
+	}
+	return nil
+}
+
 func ParseTimeYMD(value string) *time.Time {
 	if len(value) == 0 {
 		return nil

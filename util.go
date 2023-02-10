@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -61,4 +62,12 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+func ResponseError(c *gin.Context, httpCode int, err error) {
+	message := err.Error()
+	c.JSON(httpCode, ErrResponse{
+		Success: false,
+		Error:   message,
+	})
 }
