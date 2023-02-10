@@ -20,6 +20,11 @@ type TokenDetails struct {
 	RtExpires    int64
 }
 
+type AccessDetails struct {
+	AccessUuid string
+	UserUuid   string
+}
+
 func CreateToken(userUuid string, secret string) (*TokenDetails, error) {
 	td := &TokenDetails{}
 	td.AtExpires = time.Now().Add(time.Minute * 15).Unix()
@@ -39,6 +44,7 @@ func CreateToken(userUuid string, secret string) (*TokenDetails, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	//Creating Refresh Token
 	rtClaims := jwt.MapClaims{}
 	rtClaims["refresh_uuid"] = td.RefreshUuid
@@ -49,6 +55,7 @@ func CreateToken(userUuid string, secret string) (*TokenDetails, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return td, nil
 }
 
@@ -62,8 +69,7 @@ func ExtractToken(r *http.Request) string {
 	return ""
 }
 
-func VerifyToken(r *http.Request, secret string) (*jwt.Token, error) {
-	tokenString := ExtractToken(r)
+func VerifyToken(tokenString string, secret string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		//Make sure that the token method conform to "SigningMethodHMAC"
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -77,20 +83,45 @@ func VerifyToken(r *http.Request, secret string) (*jwt.Token, error) {
 	return token, nil
 }
 
-func TokenValid(r *http.Request, secret string) error {
-	token, err := VerifyToken(r, secret)
+func TokenValid(tokenString string, secret string) error {
+	token, err := VerifyToken(tokenString, secret)
 	if err != nil {
 		return err
 	}
 	if _, ok := token.Claims.(jwt.MapClaims); !ok && !token.Valid {
 		return err
 	}
+
 	return nil
+}
+
+func ExtractTokenMetadata(tokenString string, secret string) (*AccessDetails, error) {
+	token, err := VerifyToken(tokenString, secret)
+	if err != nil {
+		return nil, err
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if ok && token.Valid {
+		accessUuid, ok := claims["access_uuid"].(string)
+		if !ok {
+			return nil, err
+		}
+
+		userUuid := claims["user_uuid"].(string)
+
+		fmt.Println(userUuid)
+		return &AccessDetails{
+			AccessUuid: accessUuid,
+			UserUuid:   userUuid,
+		}, nil
+	}
+	return nil, err
 }
 
 func TokenAuthMiddleware(secret string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		err := TokenValid(c.Request, secret)
+		tokenString := ExtractToken(c.Request)
+		err := TokenValid(tokenString, secret)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, err.Error())
 			c.Abort()
