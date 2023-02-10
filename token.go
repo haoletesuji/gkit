@@ -118,6 +118,29 @@ func ExtractTokenMetadata(tokenString string, secret string) (*AccessDetails, er
 	return nil, err
 }
 
+func ExtractRefreshTokenMetadata(tokenString string, secret string) (*AccessDetails, error) {
+	token, err := VerifyToken(tokenString, secret)
+	if err != nil {
+		return nil, err
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if ok && token.Valid {
+		refreshUuid, ok := claims["refresh_uuid"].(string)
+		if !ok {
+			return nil, err
+		}
+
+		userUuid := claims["user_uuid"].(string)
+
+		fmt.Println(userUuid)
+		return &AccessDetails{
+			AccessUuid: refreshUuid,
+			UserUuid:   userUuid,
+		}, nil
+	}
+	return nil, err
+}
+
 func TokenAuthMiddleware(secret string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := ExtractToken(c.Request)
