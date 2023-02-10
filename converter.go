@@ -34,3 +34,11 @@ func ParseTimeYMD(value string) *time.Time {
 
 	return &date
 }
+
+func TimeToYMDStringValue(t *time.Time) *wrapperspb.StringValue {
+	if t != nil {
+		value := t.Format("2006-01-02")
+		return wrapperspb.String(value)
+	}
+	return nil
+}
