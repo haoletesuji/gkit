@@ -25,12 +25,12 @@ type AccessDetails struct {
 	UserUuid   string
 }
 
-func CreateToken(userUuid string, secret string) (*TokenDetails, error) {
+func CreateToken(userUuid string, atSecret, rtSecret string, atExpires, rtExpires int64) (*TokenDetails, error) {
 	td := &TokenDetails{}
-	td.AtExpires = time.Now().Add(time.Minute * 15).Unix()
+	td.AtExpires = time.Now().Add(time.Minute * time.Duration(atExpires)).Unix()
 	td.AccessUuid = uuid.New().String()
 
-	td.RtExpires = time.Now().Add(time.Hour * 24 * 7).Unix()
+	td.RtExpires = time.Now().Add(time.Minute * time.Duration(rtExpires)).Unix()
 	td.RefreshUuid = uuid.New().String()
 
 	var err error
@@ -40,7 +40,7 @@ func CreateToken(userUuid string, secret string) (*TokenDetails, error) {
 	atClaims["user_uuid"] = userUuid
 	atClaims["exp"] = td.AtExpires
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
-	td.AccessToken, err = at.SignedString([]byte(secret))
+	td.AccessToken, err = at.SignedString([]byte(atSecret))
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func CreateToken(userUuid string, secret string) (*TokenDetails, error) {
 	rtClaims["user_uuid"] = userUuid
 	rtClaims["exp"] = td.RtExpires
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
-	td.RefreshToken, err = rt.SignedString([]byte(secret))
+	td.RefreshToken, err = rt.SignedString([]byte(rtSecret))
 	if err != nil {
 		return nil, err
 	}

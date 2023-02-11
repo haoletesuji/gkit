@@ -6,8 +6,8 @@
 package wire
 
 import (
-	"httpexp/pkg"
 	gkit "gkit"
+	"httpexp/pkg"
 
 	"github.com/google/wire"
 )
