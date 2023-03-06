@@ -109,7 +109,6 @@ func ExtractTokenMetadata(tokenString string, secret string) (*AccessDetails, er
 
 		userUuid := claims["user_uuid"].(string)
 
-		fmt.Println(userUuid)
 		return &AccessDetails{
 			AccessUuid: accessUuid,
 			UserUuid:   userUuid,
@@ -132,7 +131,6 @@ func ExtractRefreshTokenMetadata(tokenString string, secret string) (*AccessDeta
 
 		userUuid := claims["user_uuid"].(string)
 
-		fmt.Println(userUuid)
 		return &AccessDetails{
 			AccessUuid: refreshUuid,
 			UserUuid:   userUuid,
