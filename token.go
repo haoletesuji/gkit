@@ -25,8 +25,8 @@ type AccessDetails struct {
 	UserUuid   string
 }
 
-func CreateToken(userUuid string, atSecret, rtSecret string, atExpires, rtExpires int64) (*TokenDetails, error) {
-	td := &TokenDetails{}
+func CreateToken(userUuid string, atSecret, rtSecret string, atExpires, rtExpires int64) (TokenDetails, error) {
+	td := TokenDetails{}
 	td.AtExpires = time.Now().Add(time.Minute * time.Duration(atExpires)).Unix()
 	td.AccessUuid = uuid.New().String()
 
@@ -42,7 +42,7 @@ func CreateToken(userUuid string, atSecret, rtSecret string, atExpires, rtExpire
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
 	td.AccessToken, err = at.SignedString([]byte(atSecret))
 	if err != nil {
-		return nil, err
+		return td, err
 	}
 
 	//Creating Refresh Token
@@ -53,7 +53,7 @@ func CreateToken(userUuid string, atSecret, rtSecret string, atExpires, rtExpire
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
 	td.RefreshToken, err = rt.SignedString([]byte(rtSecret))
 	if err != nil {
-		return nil, err
+		return td, err
 	}
 
 	return td, nil
@@ -95,48 +95,54 @@ func TokenValid(tokenString string, secret string) error {
 	return nil
 }
 
-func ExtractTokenMetadata(tokenString string, secret string) (*AccessDetails, error) {
+func ExtractTokenMetadata(tokenString string, secret string) (AccessDetails, error) {
+	td := AccessDetails{}
+
 	token, err := VerifyToken(tokenString, secret)
 	if err != nil {
-		return nil, err
+		return td, err
 	}
+
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
 		accessUuid, ok := claims["access_uuid"].(string)
 		if !ok {
-			return nil, err
+			return td, err
 		}
 
 		userUuid := claims["user_uuid"].(string)
+		td.AccessUuid = accessUuid
+		td.UserUuid = userUuid
 
-		return &AccessDetails{
-			AccessUuid: accessUuid,
-			UserUuid:   userUuid,
-		}, nil
+		return td, nil
 	}
-	return nil, err
+
+	return td, err
 }
 
-func ExtractRefreshTokenMetadata(tokenString string, secret string) (*AccessDetails, error) {
+func ExtractRefreshTokenMetadata(tokenString string, secret string) (AccessDetails, error) {
+	td := AccessDetails{}
+
 	token, err := VerifyToken(tokenString, secret)
 	if err != nil {
-		return nil, err
+		return td, err
 	}
+
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
 		refreshUuid, ok := claims["refresh_uuid"].(string)
 		if !ok {
-			return nil, err
+			return td, err
 		}
 
 		userUuid := claims["user_uuid"].(string)
+		td.AccessUuid = refreshUuid
+		td.UserUuid = userUuid
 
-		return &AccessDetails{
-			AccessUuid: refreshUuid,
-			UserUuid:   userUuid,
-		}, nil
+		return td, nil
 	}
-	return nil, err
+
+	return td, err
 }
 
 func TokenAuthMiddleware(secret string) gin.HandlerFunc {
